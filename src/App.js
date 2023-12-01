@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios'
+import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom'
+import MainListView from './components/MainListViews';
+import ViewPort from './components/ViewPost';
 
 function App() {
+  const [articleData, setArticleData] = useState([]);
+  const callApi = async () => {
+    try {
+      const request = await axios.get("http://localhost:8081/api/articles")
+      console.log(request.data);
+      setArticleData(request.data);
+    } catch (error) {
+      console.log("error : " + error);
+    }
+  }
+  useEffect(() => {
+    callApi()
+  }, []
+  )
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path='/' element={<MainListView listData={articleData} />}></Route>
+        <Route path='/article/:id' element={<ViewPort listData={articleData} />} ></Route>
+      </Routes>
     </div>
   );
 }
