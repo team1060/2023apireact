@@ -1,32 +1,31 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom';
 import MainListView from './components/MainListViews';
 import ViewPort from './components/ViewPost';
+import NewPost from './components/NewPost';
 
 function App() {
-  const [articleData, setArticleData] = useState([]);
-  const callApi = async () => {
-    try {
-      const request = await axios.get("http://localhost:8081/api/articles")
-      console.log(request.data);
-      setArticleData(request.data);
-    } catch (error) {
-      console.log("error : " + error);
-    }
-  }
-  useEffect(() => {
-    callApi()
-  }, []
-  )
+
   return (
     <div className="App">
+      <ul>
+        <li><a href="/">list</a></li>
+        <li><a href="/articles/2">view</a></li>
+        <li><a href="/articles">글작성</a></li>
+      </ul>
       <Routes>
-        <Route path='/' element={<MainListView listData={articleData} />}></Route>
-        <Route path='/article/:id' element={<ViewPort listData={articleData} />} ></Route>
+        <Route path="/" element={<MainListView />}></Route>
+        <Route path="/articles/:id" element={<ViewPort />}></Route>
+        <Route path="/articles" element={<NewPost />}></Route>
       </Routes>
     </div>
   );
+  //   <div className="App">
+  //     <Routes>
+  //       <Route path='/' element={<MainListView listData={articleData} />}></Route>
+  //       <Route path='/article/:id' element={<ViewPort listData={articleData} />} ></Route>
+  //     </Routes>
+  //   </div>
+  // );
 }
 
 export default App;
